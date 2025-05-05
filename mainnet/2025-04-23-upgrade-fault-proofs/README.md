@@ -60,6 +60,8 @@ After installation completes, quit / re-open your terminal and run:
 foundryup
 ```
 
+If you see a `libusb` warning (`warning: libusb not found...`), you can safely ignore it and continue to the next step.
+
 ### 5. Make a free [Tenderly](https://tenderly.co/) account if you don't already have one.
 
 We will use this later on for simulating and validating the task transaction.
@@ -89,7 +91,7 @@ Connect and unlock your Ledger with your 8-digit pin. Open the Ethereum applicat
 
 ### 3. Produce Simulation
 
-Run one of the following commands in your terminal based on which signer you are.
+Run one of the following commands in your terminal based on which signer you are. Please note that blind signing must first be enabled on your Ledger.
 
 Security Council signer:
 
@@ -118,22 +120,26 @@ https://dashboard.tenderly.co/TENDERLY_USERNAME/TENDERLY_PROJECT/simulator/new?n
 The link above is just an example. Paste the URL from your terminal in your browser. A prompt may ask you to choose a project, any project will do. You can create one if necessary.
 
 > #### Extra step:
+>
 > If you see the following text after the link in your terminal, "Insert the following hex into the 'Raw input data' field:", the following 2 steps are required.
+>
 > 1. Click the "Enter raw input data" option towards the bottom of the `Contract` component on the left side of your screen in Tenderly.
 > 2. Paste the data string below "Insert the following hex into the 'Raw input data' field:" in your terminal into the "Raw input data" field.
 
 Now, finish generating the simulation by clicking "Simulate Transaction".
 
-### 4 Validate Simulation
+### 4. Validate Simulation
+
 We will be performing 3 validations and extract the domain hash and message hash to approve on your Ledger:
 
 1. Validate integrity of the simulation.
 2. Validate correctness of the state diff.
 3. Validate and extract domain hash and message hash to approve.
 
-**Note: in order for these validations to occur, ensure you have "Dev Mode" turned on - this is a switch you can click towards the top right of the screen in the Tenderly UI.**
+> [!NOTE]
+> Ensure you have "Dev Mode" turned on in Tenderly for these validations. This switch is usually located towards the top right of the Tenderly UI.
 
-#### 4.1 Validate integrity of the simulation.
+#### 4.1. Validate integrity of the simulation.
 
 Make sure you are on the "Summary" tab of the tenderly simulation, to validate integrity of the simulation, we need to check the following:
 
@@ -157,9 +163,9 @@ Once complete return to this document to complete the signing.
 
 Now that we have verified the transaction performs the right operation, we need to extract the domain hash and the message hash to approve.
 
-Go back to the "Summary" tab in the Tenderly UI, and find the `GnosisSafe.checkSignatures` call. This call's `data` parameter contains both the domain hash and the message hash that will show up in your Ledger.
+Go back to the "Summary" tab in the Tenderly UI, and find the `Safe.checkSignatures` call. This call's `data` parameter contains both the domain hash and the message hash that will show up in your Ledger.
 
-It will be a concatenation of `0x1901`, the domain hash, and the message hash: `0x1901[domain hash][message hash]`.
+It will be a concatenation of `0x1901`, the domain hash, and the message hash, in the format: **`0x1901[domain hash][message hash]`**.
 
 Note down this value. You will need to compare it with the ones displayed on the Ledger screen at signing.
 
@@ -191,7 +197,7 @@ Signature: <SIGNATURE>
 
 Double check the signer address is your ledger address.
 
-### 6 Send the output to Facilitator(s)
+### 6. Send the output to Facilitator(s)
 
 Nothing has occurred onchain - these are offchain signatures which will be collected by Facilitators for execution. Execution can occur by anyone once a threshold of signatures are collected, so a Facilitator will do the final execution for convenience.
 
