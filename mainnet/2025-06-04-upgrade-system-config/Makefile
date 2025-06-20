@@ -74,42 +74,42 @@ approve-op:
 
 # BASE NESTED
 
-.PHONY: gen-validation-base-nested
-gen-validation-base-nested:
+.PHONY: gen-validation-cb
+gen-validation-cb:
 	$(GOPATH)/bin/state-diff --rpc $(L1_RPC_URL) -o BASE_NESTED_VALIDATION.md \
 	-- forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfigScript \
 	--sig "sign(address[])" "[$(BASE_NESTED_MULTISIG), $(BASE_MULTISIG)]" \
 	--sender 0x6CD3850756b7894774Ab715D136F9dD02837De50
 
-.PHONY: sign-base-nested
-sign-base-nested:
+.PHONY: sign-cb
+sign-cb:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfigScript \
 	--sig "sign(address[])" "[$(BASE_NESTED_MULTISIG), $(BASE_MULTISIG)]"
 
-.PHONY: approve-base-nested
-approve-base-nested:
+.PHONY: approve-cb
+approve-cb:
 	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfigScript \
 	--sig "approve(address[],bytes)" "[$(BASE_NESTED_MULTISIG), $(BASE_MULTISIG)]" $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast -vvvv
 
 # BASE SC
 
-.PHONY: gen-validation-base-sc
-gen-validation-base-sc:
+.PHONY: gen-validation-sc
+gen-validation-sc:
 	$(GOPATH)/bin/state-diff --rpc $(L1_RPC_URL) -o BASE_SC_VALIDATION.md \
 	-- forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfigScript \
 	--sig "sign(address[])" "[$(BASE_SC_MULTISIG), $(BASE_MULTISIG)]" \
 	--sender 0x5ff5C78ff194acc24C22DAaDdE4D639ebF18ACC6
 
-.PHONY: sign-base-sc
-sign-base-sc:
+.PHONY: sign-sc
+sign-sc:
 	$(GOPATH)/bin/eip712sign --ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" -- \
 	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfigScript \
 	--sig "sign(address[])" "[$(BASE_SC_MULTISIG), $(BASE_MULTISIG)]"
 
-.PHONY: approve-base-sc
-approve-base-sc:
+.PHONY: approve-sc
+approve-sc:
 	forge script --rpc-url $(L1_RPC_URL) UpgradeSystemConfigScript \
 	--sig "approve(address[],bytes)" "[$(BASE_SC_MULTISIG), $(BASE_MULTISIG)]" $(SIGNATURES) \
 	--ledger --hd-paths "m/44'/60'/$(LEDGER_ACCOUNT)'/0/0" --broadcast -vvvv
